@@ -1,4 +1,5 @@
 from load import load_dataset
+import numpy as np
 
 feature_names = [
     'area',
@@ -31,3 +32,8 @@ for training,testing in kf:
     means.append(curmean)
 
 print("Mean accuracy: {:.1%}".format(np.mean(means)))
+
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+classifier = KNeighborsClassifier(n_neighbors=1)
+classifier = Pipeline([('norm', StandardScaler()), ('knn', classifier)])
