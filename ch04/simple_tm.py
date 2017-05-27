@@ -7,7 +7,7 @@ import PyPDF2
 
 doc_set = []
 
-for folderName, subfolders, filenames in os.walk('/Users/alexeydemyanchuk/Documents/Artificial Intelligence/English/Artificial Intelligence'):
+for folderName, subfolders, filenames in os.walk('/Users/alexeydemyanchuk/Documents/Artificial Intelligence/English/Computer vision'):
 
     for filename in filenames:
         if filename.endswith('.pdf'):
@@ -15,12 +15,9 @@ for folderName, subfolders, filenames in os.walk('/Users/alexeydemyanchuk/Docume
             pdfFileObj = open(pathToPdf, 'rb')
             pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
             pdfSize = pdfReader.numPages
-            doc = ' '
-            for i in range(3):
-                page = pdfSize // 2
-                pageObj = pdfReader.getPage(page)
-                doc += pageObj.extractText()
-            doc_set.append(doc)
+            page = pdfSize // 2
+            pageObj = pdfReader.getPage(page)
+            doc_set.append(pageObj.extractText())
 
 
 
@@ -47,13 +44,16 @@ for doc in doc_set:
     stemmed_tokens = [p_stemmer.stem(token) for token in stopped_tokens]
 
     texts.append(stemmed_tokens)
+print(len(texts), texts[0])
 
-# turn our tokenized documents into a id <-> term dictionary
-dictionary = corpora.Dictionary(texts)
+# # turn our tokenized documents into a id <-> term dictionary
+# dictionary = corpora.Dictionary(texts)
+# print(dictionary)
+#
+# # convert tokenized documents into a document-term matrix
+# corpus = [dictionary.doc2bow(text) for text in texts]
+# print(corpus)
 
-# convert tokenized documents into a document-term matrix
-corpus = [dictionary.doc2bow(text) for text in texts]
+# ldamodel = models.ldamodel.LdaModel(corpus, num_topics=5, id2word=dictionary, passes=200)
 
-ldamodel = models.ldamodel.LdaModel(corpus, num_topics=5, id2word=dictionary, passes=200)
-
-print(ldamodel.print_topics(num_topics=5, num_words=4))
+# print(ldamodel.print_topics(num_topics=5, num_words=4))
