@@ -1,6 +1,7 @@
 from nltk.tokenize import RegexpTokenizer
-from stop_words import get_stop_words
+from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+from nltk.corpus import wordnet
 from gensim import corpora, models
 import os
 import PyPDF2
@@ -17,8 +18,13 @@ for folderName, subfolders, filenames in os.walk('/Users/alexeydemyanchuk/Docume
             pdfSize = pdfReader.numPages
             page = pdfSize // 2
             pageObj = pdfReader.getPage(page)
-            doc_set.append(pageObj.extractText())
-
+            try:
+                text = pageObj.extractText()
+                if len(pageObj.extractText()) > 500:
+                    doc_set.append(text)
+            except:
+                pass
+            pdfFileObj.close()
 
 
 
@@ -28,8 +34,7 @@ tokenizer = RegexpTokenizer(r'\w+')
 
 
 # create English stop words list
-en_stop = get_stop_words('en')
-
+en_stop = stopwords.words('english')
 # Create p_stemmer of class PorterStemmer
 p_stemmer = PorterStemmer()
 #
@@ -39,12 +44,14 @@ for doc in doc_set:
     raw = doc.lower()
     tokens = tokenizer.tokenize(raw)
     # remove stop words from tokens
-    stopped_tokens = [token for token in tokens if not token in en_stop]
+    stopped_tokens = [token for token in tokens if token not in en_stop]
 
-    stemmed_tokens = [p_stemmer.stem(token) for token in stopped_tokens]
+    words_only_tokens = [token for token in stopped_tokens if wordnet.synsets(token)]
+
+    stemmed_tokens = [p_stemmer.stem(token) for token in words_only_tokens]
 
     texts.append(stemmed_tokens)
-print(len(texts), texts[0])
+print(len(texts), texts)
 
 # # turn our tokenized documents into a id <-> term dictionary
 # dictionary = corpora.Dictionary(texts)

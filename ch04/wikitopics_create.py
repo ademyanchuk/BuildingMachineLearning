@@ -19,8 +19,8 @@ logging.basicConfig(
 
 # Load the preprocessed corpus (id2word & mm):
 id2word = gensim.corpora.Dictionary.load_from_text(
-    'data/wiki_en_output_wordids.txt.bz2')
-mm = gensim.corpora.MmCorpus('data/wiki_en_output_tfidf.mm')
+    'data_wordids.txt.bz2')
+mm = gensim.corpora.MmCorpus('data_tfidf.mm')
 
 # Calling the constructor is enough to build the model
 # This call will take a few hours!
