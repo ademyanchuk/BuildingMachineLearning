@@ -24,24 +24,28 @@ mm = gensim.corpora.MmCorpus('data_tfidf.mm')
 
 # Calling the constructor is enough to build the model
 # This call will take a few hours!
-model = gensim.models.ldamodel.LdaModel(
-    corpus=mm,
-    id2word=id2word,
-    num_topics=NR_OF_TOPICS,
-    update_every=1,
-    chunksize=10000,
-    passes=1)
+# model = gensim.models.ldamodel.LdaModel(
+#     corpus=mm,
+#     id2word=id2word,
+#     num_topics=NR_OF_TOPICS,
+#     update_every=1,
+#     chunksize=10000,
+#     passes=1)
 
 # Save the model so we do not need to learn it again.
-model.save('wiki_lda.pkl')
+# model.save('wiki_lda.pkl')
+
+model = gensim.models.ldamodel.LdaModel.load('wiki_lda.pkl')
+
+
 
 # Compute the document/topic matrix
-topics = np.zeros((len(mm), model.num_topics))
-for di,doc in enumerate(mm):
-    doc_top = model[doc]
-    for ti,tv in doc_top:
-        topics[di,ti] += tv
-np.save('topics.npy', topics)
+# topics = np.zeros((len(mm), model.num_topics))
+# for di,doc in enumerate(mm):
+#     doc_top = model[doc]
+#     for ti,tv in doc_top:
+#         topics[di,ti] += tv
+# np.save('topics.npy', topics)
 
 # Alternatively, we create a sparse matrix and save that. This alternative
 # saves disk space, at the cost of slightly more complex code:
