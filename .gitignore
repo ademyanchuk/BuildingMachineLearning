@@ -1,1 +1,8 @@
 *.pyc
+data.tfidf_model
+data_bow.mm
+data_bow.mm.index
+data_tfidf.mm
+data_tfidf.mm.index
+data_wordids.txt.bz2
+wiki_lda.pkl.id2word
