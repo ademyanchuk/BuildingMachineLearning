@@ -7,7 +7,7 @@ class DBHelper:
         self.conn = sqlite3.connect(dbname)
 
     def setup(self):
-        stmt = "CREATE TABLE IF NOT EXIST items (description text)"
+        stmt = "CREATE TABLE IF NOT EXISTS items (description text)"
         self.conn.execute(stmt)
         self.conn.commit()
 
